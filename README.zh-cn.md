@@ -5,13 +5,13 @@
 
 <p align="center">
   <a href="https://fictionx.ai/">FictionX Website</a>
-  <a href="https://github.com/fictionxai/fictionx-story-gen/tree/HEAD/story_samples">Story Samples</a> |
-  <a href="https://github.com/fictionxai/fictionx-story-gen/tree/HEAD/README.md">English</a> |
-  <a href="https://github.com/fictionxai/fictionx-story-gen/tree/HEAD/README_zh-cn.md">中文</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/story_samples">Story Samples</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.md">English</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.zh-cn.md">中文</a> |
 </p>
 
 
-# FictionX:基于多智能体的交互式无限故事生成框架
+# FictionX：基于多智能体的交互式无限故事生成框架
 
 本项目旨在探索和突破长篇内容连续生成的技术边界，为用户提供一个全自动或可交互的高质量长篇小说生成器。
 
