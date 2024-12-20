@@ -5,9 +5,9 @@
 
 <p align="center">
   <a href="https://fictionx.ai/">FictionX Website</a>
-  <a href="https://github.com/fictionxai/fictionx-story-gen/tree/HEAD/story_samples">Story Samples</a> |
-  <a href="https://github.com/fictionxai/fictionx-story-gen/tree/HEAD/README.md">English</a> |
-  <a href="https://github.com/fictionxai/fictionx-story-gen/tree/HEAD/README_zh-cn.md">中文</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/tree/main/story_samples">Story Samples</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.md">English</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.zh-cn.md">中文</a> |
 </p>
 
 ______________________________________________________________________
