@@ -4,10 +4,10 @@
 [![Twitter][twitter-image]][twitter-url]
 
 <p align="center">
-  <a href="https://fictionx.ai/">FictionX Website</a>
+  <a href="https://fictionx.ai/">FictionX Website</a> |
   <a href="https://github.com/fictionxai/fictionx-story-gen/blob/story_samples">Story Samples</a> |
   <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.md">English</a> |
-  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.zh-cn.md">中文</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.zh-cn.md">中文</a>
 </p>
 
 
@@ -36,9 +36,93 @@ FictionX 专注于长篇故事生成技术，目前已实现稳定生成4,000-5,
 
 #### 核心架构
 
+```mermaid
+graph TB
+    User((用户)) --> Frontpage
+    User --> Social
+    User --> Mobile
+
+    subgraph "用户界面"
+        Frontpage["网页前端"]
+        Social["Discord & TG 接入 (待定)"]
+        Mobile["移动应用 (待定)"]
+    end
+
+    subgraph "应用层"
+        API[API 网关]
+        Auth[身份认证]
+        StoryGen[故事生成服务]
+        Chat[RAG 对话服务]
+        NFTAccess[NFT 访问管理]
+    end
+
+    subgraph "Endless Storytelling Engine"
+        subgraph "AI 智能体"
+            COA[角色与大纲智能体]
+            SGA[故事生成智能体]
+            EA[评估智能体]
+        end
+        
+        subgraph "图像生成"
+            ImgGen[图像生成服务]
+            T2I[文本生图模型]
+            I2I[图像转换模型]
+        end
+        
+        subgraph "模型"
+            LLM[Llama-3.3-70B]
+        end
+    end
+
+    subgraph "数据层"
+        VDB[(向量数据库)]
+        Cache[(Redis 缓存)]
+        BC[区块链存储]
+    end
+
+    subgraph "基础设施"
+        Together[Together AI]
+        Replicate[Replicate]
+        Solana[Solana 网络]
+    end
+
+    Frontpage --> API
+    Social --> API
+    Mobile --> API
+    API --> Auth
+    Auth --> StoryGen
+    Auth --> Chat
+    Auth --> NFTAccess
+    
+    StoryGen --> COA
+    StoryGen --> SGA
+    StoryGen --> EA
+    StoryGen --> ImgGen
+    ImgGen --> T2I
+    ImgGen --> I2I
+    Chat --> VDB
+    
+    COA --> LLM
+    SGA --> LLM
+    EA --> LLM
+    
+    LLM --> Together
+    T2I --> Replicate
+    I2I --> Replicate
+    
+    NFTAccess --> BC
+    BC --> Solana
+```
+
+**Agents**
+- 角色与大纲Agent
+- 故事内容生成Agent
+- 评分Agent
+
 整个框架由3个核心Agent构成：角色与大纲Agent、故事内容生成Agent，以及评分Agent（包含一致性、连贯性、评论性、篇幅长度4个维度的评分）。
 
-#### 创作流程
+
+#### 生成流程
 
 故事生成采用多轮迭代方式，每轮包含规划、起草、写作和评分四个关键阶段：
 
@@ -56,6 +140,7 @@ FictionX 专注于长篇故事生成技术，目前已实现稳定生成4,000-5,
 
 同时，Agent通过调用Image2Image服务的FLUX PuLID模型，确保角色形象在故事发展过程中的视觉一致性，并根据当前情节和场景上下文生成匹配的配图，增强故事的沉浸感。
 
+#### 流程示意
 
 ```mermaid
 graph TB
@@ -128,23 +213,23 @@ FictionX 默认能够在没有人为干预的情况下，自动生成长篇故�
 
 FictionX 采用多模态生成技术，集成了先进的T2I(Text2Image)和I2I(Image2Image)模型：
 
--**模型选择**
+**模型选择**
 主要使用Flux Dev作为核心模型，同时补充使用FLUX PuLID模型进行I2I处理。另外，图像生成服务基于Llama-3.3构建了专业的提示词工程系统，以优化生成图像的质量和准确性。
 
--**图像生成策略**
+**图像生成策略**
 针对不同场景采用差异化处理方案。对于角色肖像，使用Image2Image结合PuLID来保持角色视觉形象的一致性；场景图片则基于当前情节内容和环境描述进行动态生成；对于故事中出现的关键道具，系统会根据具体描述生成相应的视觉呈现，增强故事的沉浸感。
 
--**质量保障**
+**质量保障**
 实现了完整的质量保障机制，包括对每张生成图像进行实时的质量评估，在生成失败或质量不达标时启动自动重试机制，并通过风格一致性检查确保整个故事中的图像风格保持连贯统一。
 
-### 角色互动聊天
+### 基于RAG的角色互动聊天
 
 FictionX 基于检索增强生成(RAG)技术，实现了与小说角色进行互动聊天的功能：
 
--**数据构建流程**
+**数据构建流程**
 故事完成后，FictionX 会自动进行向量化处理，将角色、场景、情节等信息存储到本地文件形式存储的向量数据库中。
 
--**交互功能**
+**交互功能**
 支持用户与故事中的任意角色进行实时对话。所有角色的回复都基于故事上下文动态生成，同时严格保持角色的性格特征和独特的说话风格。为提升用户体验，故事完成后，FictionX 还支持多语言交互，让来自不同语言背景的读者都能与角色进行自然对话。
 
 详细的聊天系统实现请参考 [StoryChatV1](https://github.com/fictionxai/story-chat-v1)。
@@ -188,10 +273,10 @@ gunicorn -c gunicorn_config.py api:app
 
 ## 常见问题
 
--**支持哪些语言？**
+**支持哪些语言？**
 目前故事生成仅支持英语。后续计划通过在用户输入初始提示词的阶段，添加语言指令来支持多语言创作。不过在角色聊天功能中，用户可以使用任何语言与故事角色进行交流。
 
--**有示例内容吗？**
+**有示例内容吗？**
 可以在[示例](./story_samples/)中查看已生成的故事样本。
 
 ## 联系我们

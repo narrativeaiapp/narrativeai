@@ -8,7 +8,7 @@ import Levenshtein
 from transformers import AutoTokenizer
 from scipy.special import log_softmax
 
-from storygen.common.llm.prompt import TemplatePromptBuilder
+from storygenv1.common.llm.prompt import TemplatePromptBuilder
 
 tokenizers = {}
 

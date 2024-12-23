@@ -4,10 +4,10 @@
 [![Twitter][twitter-image]][twitter-url]
 
 <p align="center">
-  <a href="https://fictionx.ai/">FictionX Website</a>
+  <a href="https://fictionx.ai/">FictionX Website</a> |
   <a href="https://github.com/fictionxai/fictionx-story-gen/tree/main/story_samples">Story Samples</a> |
   <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.md">English</a> |
-  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.zh-cn.md">中文</a> |
+  <a href="https://github.com/fictionxai/fictionx-story-gen/blob/main/README.zh-cn.md">中文</a>
 </p>
 
 ______________________________________________________________________
@@ -36,7 +36,85 @@ FictionX focuses on long-form story generation technology, currently achieving s
 
 ### Infinity Long Story Generator
 
-#### Core Architecture
+#### Architecture
+
+```mermaid
+graph TB
+    User((User)) --> Frontpage
+    User --> Social
+    User --> Mobile
+
+    subgraph "User Interface"
+        Frontpage["Frontpage (WEB)"]
+        Social["Discord & TG Access (TBD)"]
+        Mobile["Mobile APP (TBD)"]
+    end
+
+    subgraph "Application Layer"
+        API[API Gateway]
+        Auth[Authentication]
+        StoryGen[Story Generation Service]
+        Chat[RAG Chat Service]
+        NFTAccess[NFT Access Management]
+    end
+
+    subgraph "Endless Storytelling Engine"
+        subgraph "AI Agents"
+            COA[Character & Outline Agent]
+            SGA[Story Generation Agent]
+            EA[Evaluation Agent]
+        end
+        
+        subgraph "Image Generation"
+            ImgGen[Image Generation Service]
+            T2I[Text2Image Model]
+            I2I[Image2Image Model]
+        end
+        
+        subgraph "Models"
+            LLM[Llama-3.3-70B]
+        end
+    end
+
+    subgraph "Data Layer"
+        VDB[(Vector Database)]
+        Cache[(Redis Cache)]
+        BC[Blockchain Storage]
+    end
+
+    subgraph "Infrastructure"
+        Together[Together AI]
+        Replicate[Replicate]
+        Solana[Solana Network]
+    end
+
+    Frontpage --> API
+    Social --> API
+    Mobile --> API
+    API --> Auth
+    Auth --> StoryGen
+    Auth --> Chat
+    Auth --> NFTAccess
+    
+    StoryGen --> COA
+    StoryGen --> SGA
+    StoryGen --> EA
+    StoryGen --> ImgGen
+    ImgGen --> T2I
+    ImgGen --> I2I
+    Chat --> VDB
+    
+    COA --> LLM
+    SGA --> LLM
+    EA --> LLM
+    
+    LLM --> Together
+    T2I --> Replicate
+    I2I --> Replicate
+    
+    NFTAccess --> BC
+    BC --> Solana
+```
 
 **Agents**
  - Character & Outline Agent
@@ -62,6 +140,8 @@ During this phase, the `Character & Outline Agent` constructs a complete story w
 In the final content generation phase, the `Story Content Generation Agent` processes each leaf node sequentially. For each node, it performs 4-8 different content renderings, each generating one or more paragraphs. `Evaluation Agent` cluster comprehensively assesses these renderings across dimensions of consistency, coherence, commentary, and length, selecting the highest-scoring version as the final content for that node.
 
 Simultaneously, using the `FLUX PuLID` model through the `Image2Image` service, the Agent maintains visual consistency of character appearances throughout story development and generates matching illustrations based on current plot and scene context, enhancing story immersion.
+
+#### Workflow
 
 ```mermaid
 graph TB
